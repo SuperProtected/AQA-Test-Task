@@ -1,0 +1,15 @@
+services:
+  e2e:
+    build: .
+    image: wikipedia-interface-language-e2e
+    # WIKI_USERNAME / WIKI_PASSWORD are injected at runtime from the local .env file.
+    env_file: .env
+    # Recommended by Playwright for Chromium in Docker.
+    ipc: host
+    init: true
+    volumes:
+      # The HTML report is written straight into ./playwright-report on the host,
+      # so it stays available after the container is removed.
+      - ./playwright-report:/app/playwright-report
+      # Login session saved by `npm run auth`; reused so the container does not have to log in again.
+      - ./playwright/.auth:/app/playwright/.auth
